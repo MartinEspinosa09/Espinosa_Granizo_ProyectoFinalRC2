@@ -77,3 +77,50 @@ int main(){
     } while (opcion != 7);
     return 0;
 }
+void registrarEmpleado(Empleado empleados[], int *contador){
+    if (*contador >= max_empleados)
+    {
+        printf("ERROR: limite de empleados alcanzado\n");
+        return;
+    }
+    Empleado nuevo;
+    int repetido;
+    printf("REGISTRAR\n");
+    do
+    {
+        repetido=0;
+        printf("ingresa el codigo\n");
+        scanf("%s",nuevo.codigo_empleado);
+        for (int i = 0; i < *contador; i++)
+        {
+            if (strcmp(empleados[i].codigo_empleado, nuevo.codigo_empleado)==0)
+            {
+                printf("ERROR: el codigo ya existe\n");
+                repetido = 1;
+                break;
+            }
+            
+        }
+        
+    } while (repetido == 1);
+    
+    printf("Nombre: \n");
+    scanf(" %[^\n]s", nuevo.nombre); 
+
+    printf("Cargo: ");
+    scanf(" %[^\n]s", nuevo.cargo);
+    do {
+        printf("Sueldo Base (mayor a 0): \n");
+        scanf("%f", &nuevo.sueldo_base);
+    } while (nuevo.sueldo_base <= 0);
+
+    do {
+        printf("Horas Extra (0 o mas): \n");
+        scanf("%d", &nuevo.horas_extra);
+    } while (nuevo.horas_extra < 0);
+
+    empleados[*contador]=nuevo;
+    (*contador)++;
+    printf("empleado registrado con exito\n");
+}
+
