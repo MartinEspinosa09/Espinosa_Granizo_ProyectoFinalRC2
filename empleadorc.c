@@ -123,4 +123,20 @@ void registrarEmpleado(Empleado empleados[], int *contador){
     (*contador)++;
     printf("empleado registrado con exito\n");
 }
+void listarEmpleados(Empleado empleados[], int contador){
+    if (contador==0)
+    {
+        printf("no hay empleados registrados\n");
+        return; 
+    }
+    printf("\n%-10s %-20s %-15s %-12s %-10s %-12s\n", "CODIGO", "NOMBRE", "CARGO", "SUELDO BASE", "H.EXTRA", "SUELDO TOTAL");
+
+    for (int i = 0; i < contador; i++)
+    {
+        float sueldo_total=empleados[i].sueldo_base + (empleados[i].horas_extra*valor_hora_extra);
+
+        printf("%-10s %-20s %-15s %-12.2f %-10d %-12.2f\n", empleados[i].codigo_empleado, empleados[i].nombre, empleados[i].cargo, empleados[i].sueldo_base, empleados[i].horas_extra, sueldo_total);
+    }
+    
+}
 
