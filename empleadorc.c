@@ -139,4 +139,26 @@ void listarEmpleados(Empleado empleados[], int contador){
     }
     
 }
+void buscarEmpleado(Empleado empleados[], int contador){
+    if (contador == 0)
+    {
+        printf("no hay empleados registrados para buscar\n");
+        return;
+    }
+    
+    char criterio[100];
+    int encontrado=0; 
+    printf("\nIngrese el codigo exacto o parte del nombre a buscar: \n");
+    scanf(" %[^\n]s", criterio);
+
+    for (int i = 0; i < contador; i++) {
+
+        if (strcmp(empleados[i].codigo_empleado, criterio) == 0 || strstr(empleados[i].nombre, criterio) != NULL) {
+            float sueldo_total = empleados[i].sueldo_base + (empleados[i].horas_extra * valor_hora_extra);
+            
+            printf("\n[Resultado] Codigo: %s | Nombre: %s | Cargo: %s | Sueldo Total: %.2f\n",
+             empleados[i].codigo_empleado, empleados[i].nombre, empleados[i].cargo, sueldo_total);
+            encontrado = 1;
+        }
+    }
 
