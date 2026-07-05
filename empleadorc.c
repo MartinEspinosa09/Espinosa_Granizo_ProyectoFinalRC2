@@ -161,4 +161,120 @@ void buscarEmpleado(Empleado empleados[], int contador){
             encontrado = 1;
         }
     }
+}
+void actualizarEmpleado(Empleado empleados[], int contador) {
+    char codigo[16];
+    int encontrado = 0;
 
+    printf("\nIngrese el codigo del empleado que desea modificar: ");
+    scanf("%s", codigo);
+
+    for (int i = 0; i < contador; i++) {
+        if (strcmp(empleados[i].codigo_empleado, codigo) == 0) {
+            encontrado = 1;
+            printf("Modificando los datos de: %s\n", empleados[i].nombre);
+
+            printf("Nuevo Nombre: ");
+            scanf(" %[^\n]s", empleados[i].nombre);
+
+            printf("Nuevo Cargo: ");
+            scanf(" %[^\n]s", empleados[i].cargo);
+
+            do {
+                printf("Nuevo Sueldo Base (mayor a 0): ");
+                scanf("%f", &empleados[i].sueldo_base);
+            } while (empleados[i].sueldo_base <= 0);
+
+            do {
+                printf("Nuevas Horas Extra (0 o mas): ");
+                scanf("%d", &empleados[i].horas_extra);
+            } while (empleados[i].horas_extra < 0);
+
+            printf("Empleado modificado correctamente.\n");
+            break;
+        }
+    }
+
+    if (encontrado == 0) {
+        printf("Error: No se encontro ningun empleado con ese codigo.\n");
+    }
+}
+
+void eliminarEmpleado(Empleado empleados[], int *contador) {
+    char codigo[16];
+    int encontrado = 0;
+    char confirma;
+
+    printf("\nIngrese el codigo del empleado que desea eliminar: ");
+    scanf("%s", codigo);
+
+    for (int i = 0; i < *contador; i++) {
+        if (strcmp(empleados[i].codigo_empleado, codigo) == 0) {
+            encontrado = 1;
+            
+            printf("¿Esta seguro de que desea eliminar a %s? (s/n): ", empleados[i].nombre);
+            scanf(" %c", &confirma);
+
+            if (confirma == 's' || confirma == 'S') {
+                
+                for (int j = i; j < *contador - 1; j++) {
+                    empleados[j] = empleados[j + 1];
+                }
+                (*contador)--; 
+                printf("Empleado eliminado del sistema.\n");
+            } else {
+                printf("Operacion cancelada.\n");
+            }
+            break;
+        }
+    }
+    
+    if (encontrado == 0) {
+        printf("Error: Empleado no encontrado.\n");
+    }
+}
+
+void guardarEnArchivo(Empleado empleados[], int contador) {
+    FILE *archivo = fopen("empleados.csv", "w");
+    if (archivo == NULL) {
+        printf("Error: No se pudo abrir el archivo para guardar datos.\n");
+        return;
+    }
+
+    fprintf(archivo, "codigo_empleado,nombre,cargo,sueldo_base,horas_extra\n");
+
+    for (int i = 0; i < contador; i++) {
+        fprintf(archivo, "%s,%s,%s,%.2f,%d\n",
+                empleados[i].codigo_empleado,
+                empleados[i].nombre,
+                empleados[i].cargo,
+                empleados[i].sueldo_base,
+                empleados[i].horas_extra);
+    }
+    fclose(archivo);
+}
+
+void cargarDesdeArchivo(Empleado empleados[], int *contador) {
+    FILE *archivo = fopen("empleados.csv", "r");
+    if (archivo == NULL) {
+        return;
+    }
+    char cabecera[150];
+    
+    fgets(cabecera, sizeof(cabecera), archivo);
+
+    while (fscanf(archivo, " %[^,],%[^,],%[^,],%f,%d\n",
+                  empleados[*contador].codigo_empleado,
+                  empleados[*contador].nombre,
+                  empleados[*contador].cargo,
+                  &empleados[*contador].sueldo_base,
+                  &empleados[*contador].horas_extra) == 5) {
+        
+        (*contador)++;
+        if (*contador >= max_empleados) {
+            break;
+        }
+    }
+
+    fclose(archivo);
+}
