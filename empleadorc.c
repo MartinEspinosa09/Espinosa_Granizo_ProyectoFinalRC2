@@ -234,3 +234,22 @@ void eliminarEmpleado(Empleado empleados[], int *contador) {
     }
 }
 
+void guardarEnArchivo(Empleado empleados[], int contador) {
+    FILE *archivo = fopen("empleados.csv", "w");
+    if (archivo == NULL) {
+        printf("Error: No se pudo abrir el archivo para guardar datos.\n");
+        return;
+    }
+
+    fprintf(archivo, "codigo_empleado,nombre,cargo,sueldo_base,horas_extra\n");
+
+    for (int i = 0; i < contador; i++) {
+        fprintf(archivo, "%s,%s,%s,%.2f,%d\n",
+                empleados[i].codigo_empleado,
+                empleados[i].nombre,
+                empleados[i].cargo,
+                empleados[i].sueldo_base,
+                empleados[i].horas_extra);
+    }
+    fclose(archivo);
+}
