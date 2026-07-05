@@ -253,3 +253,28 @@ void guardarEnArchivo(Empleado empleados[], int contador) {
     }
     fclose(archivo);
 }
+
+void cargarDesdeArchivo(Empleado empleados[], int *contador) {
+    FILE *archivo = fopen("empleados.csv", "r");
+    if (archivo == NULL) {
+        return;
+    }
+    char cabecera[150];
+    
+    fgets(cabecera, sizeof(cabecera), archivo);
+
+    while (fscanf(archivo, " %[^,],%[^,],%[^,],%f,%d\n",
+                  empleados[*contador].codigo_empleado,
+                  empleados[*contador].nombre,
+                  empleados[*contador].cargo,
+                  &empleados[*contador].sueldo_base,
+                  &empleados[*contador].horas_extra) == 5) {
+        
+        (*contador)++;
+        if (*contador >= max_empleados) {
+            break;
+        }
+    }
+
+    fclose(archivo);
+}
