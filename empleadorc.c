@@ -123,6 +123,7 @@ void registrarEmpleado(Empleado empleados[], int *contador){
     (*contador)++;
     printf("empleado registrado con exito\n");
 }
+
 void listarEmpleados(Empleado empleados[], int contador){
     if (contador==0)
     {
@@ -139,6 +140,7 @@ void listarEmpleados(Empleado empleados[], int contador){
     }
     
 }
+
 void buscarEmpleado(Empleado empleados[], int contador){
     if (contador == 0)
     {
@@ -161,7 +163,12 @@ void buscarEmpleado(Empleado empleados[], int contador){
             encontrado = 1;
         }
     }
+
+    if (encontrado == 0) {
+        printf("No se encontraron empleados con el criterio ingresado.\n");
+    }
 }
+
 void actualizarEmpleado(Empleado empleados[], int contador) {
     char codigo[16];
     int encontrado = 0;
